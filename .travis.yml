@@ -9,6 +9,6 @@ after_success:
 
 #  coveralls
 
-branches:
-  except:
-    - develop
+#branches:
+#  except:
+#    - master
