@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Test suite" parallel="classes" thread-count="10">
+    <test name="Default tests" verbose="1" thread-count="10" parallel="classes">
+
+        <groups>
+            <run>
+                <exclude name="integration"/>
+            </run>
+        </groups>
+
+        <packages>
+            <package name="com.arri.travis.example.*"/>
+        </packages>
+    </test>
+</suite>
