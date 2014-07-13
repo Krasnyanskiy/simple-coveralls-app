@@ -12,6 +12,9 @@ import org.testng.annotations.Test;
 
 import java.util.Map;
 
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
@@ -30,7 +33,7 @@ public class PropertyHolderProviderTest extends PowerMockTestCase {
     private PropertyHolderProvider providerMock;
 
     @Mock
-    private Map dummyMap;
+    private Map mockedMap;
 
     @InjectMocks
     private DatePropertyHolder expectedHolderMock;
@@ -46,18 +49,18 @@ public class PropertyHolderProviderTest extends PowerMockTestCase {
         // Given
         whenNew(PropertyHolderProvider.class)
                 .withParameterTypes(Map.class)
-                .withArguments(dummyMap)
+                .withArguments(mockedMap)
                 .thenReturn(providerMock);
 
-        setInternalState(providerMock, "property", dummyMap);
+        setInternalState(providerMock, "property", mockedMap);
 
         // When
-        PropertyHolderProvider property = new PropertyHolderProvider(dummyMap);
+        PropertyHolderProvider property = new PropertyHolderProvider(mockedMap);
         Map retrieved = property.getProperty();
 
         // Than
         assertNotNull(property);
-        assertEquals(retrieved, dummyMap);
+        assertEquals(retrieved, mockedMap);
     }
 
     @Test
@@ -66,7 +69,7 @@ public class PropertyHolderProviderTest extends PowerMockTestCase {
         // Given
         whenNew(PropertyHolderProvider.class)
                 .withParameterTypes(Map.class)
-                .withArguments(dummyMap)
+                .withArguments(mockedMap)
                 .thenReturn(providerMock);
 
         when(providerMock.create(Mockito.eq(DatePropertyHolder.class)))
@@ -74,17 +77,17 @@ public class PropertyHolderProviderTest extends PowerMockTestCase {
 
         // When
         DatePropertyHolder retrieved =
-                new PropertyHolderProvider(dummyMap).create(DatePropertyHolder.class);
+                new PropertyHolderProvider(mockedMap).create(DatePropertyHolder.class);
 
         // Than
         assertNotNull(retrieved);
         assertEquals(retrieved, expectedHolderMock);
-        //verify(providerMock, times(1)).create(DatePropertyHolder.class);
+        verify(providerMock, times(1)).create(DatePropertyHolder.class);
     }
 
     @Test
     public void should_invoke_getter() {
-        PropertyHolderProvider provider = new PropertyHolderProvider(dummyMap);
+        PropertyHolderProvider provider = new PropertyHolderProvider(mockedMap);
         assertNotNull(provider.getProperty());
 
         PropertyHolderProvider providerWithNullProp = new PropertyHolderProvider(null);
@@ -93,6 +96,6 @@ public class PropertyHolderProviderTest extends PowerMockTestCase {
 
     @AfterMethod
     public void tearDown() {
-
+        reset(providerMock, mockedMap);
     }
 }

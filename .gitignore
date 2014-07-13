@@ -13,6 +13,7 @@ target/
 libs/
 out/
 build/
+coverage_output/
 
 
 # compiled source
