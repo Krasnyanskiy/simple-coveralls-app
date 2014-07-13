@@ -9,11 +9,11 @@
 
 
 # output directies
+coverage_output/
 target/
 libs/
 out/
 build/
-coverage_output/
 
 
 # compiled source
